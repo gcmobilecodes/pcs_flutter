@@ -6,6 +6,7 @@ import 'package:get/get_navigation/get_navigation.dart';
 import 'package:pcs/view/home/ContactUsScreen.dart';
 import 'package:pcs/view/home/EditProfileScreen.dart';
 
+import '../../utils/SharedPref.dart';
 import '../../utils/color_utils.dart';
 import '../auth/LoginScreen.dart';
 
@@ -260,7 +261,8 @@ class _SettingScreenState extends State<SettingScreen> {
                             GestureDetector(
                             onTap: ()
                             {
-                                Get.to(const LoginScreen());
+                              SharedPref.getInstance()!.clearSF();
+                              Get.offAll(const LoginScreen());
                              },
                         child:Column(
                           children: [

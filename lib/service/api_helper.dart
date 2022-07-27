@@ -1,7 +1,7 @@
 import 'package:pcs/utils/app_keys.dart';
 import '../utils/SharedPref.dart';
 
-var id = SharedPref.getInstance()!.getStringValuesSF(AppKeys.loginId);
+var id = SharedPref.getInstance()!.getStringValuesSF(AppKeys.userId);
 nearByParams(wid) {
   final params = {
     'businessId' : id,

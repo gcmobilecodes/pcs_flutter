@@ -46,7 +46,9 @@ class DioClient {
                     dio: dio, requestOptions: error.requestOptions).requestRetrier();
             break;
           default:
+            print(error.message);
             throw error;
+
             break;
         }
       } else {

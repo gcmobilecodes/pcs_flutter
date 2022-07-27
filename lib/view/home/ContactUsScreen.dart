@@ -1,11 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:pcs/model/contact.dart';
+import 'package:pcs/service/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../common_widget/app_widget.dart';
 import '../../common_widget/button_widget.dart';
 import '../../common_widget/textfield_widget.dart';
+import '../../utils/app_keys.dart';
 import '../../utils/color_utils.dart';
 import 'SettingScreen.dart';
 
@@ -19,50 +23,52 @@ class ContactUsScreen extends StatefulWidget {
 class _ContactUsScreenState extends State<ContactUsScreen>{
   final TextEditingController _queryController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  Contact?contact;
+  APIService service = APIService(Dio());
+  var token;
   void valfn() async {
     if (_formKey.currentState!.validate()) {
-      //   AppWidget.showDialogLoading();
-      //   var params = {
-      //     'unameORemail': _useridController.text,
-      //     'pwd': _passwordController.text
-      //   };
-      //   Map map = await service.login(params);
-      //   if (map['statusCode'] == 200) {
-      //     AppWidget.hideDialog();
-      //     SharedPref.getInstance()!.addStringToSF(AppKeys.loginId, map['data']['_id']);
-      //     SharedPref.getInstance()!.addStringToSF(AppKeys.name, map['data']['uname']);
-      //     SharedPref.getInstance()!.addStringToSF(AppKeys.email, map['data']['email']);
-      //     SharedPref.getInstance()!.addStringToSF(AppKeys.profile, map['data']['profileImage']);
-      //     SharedPref.getInstance()!.addToken(AppKeys.token, map['data']['token']);
-      //     //Get.(MainScreen(currentIndex: 0));
-      //
-      //     Navigator.of(context).pushAndRemoveUntil(
-      //         MaterialPageRoute(
-      //             builder: (context) => MainScreen(
-      //               currentIndex: 0,
-      //
-      //             )),
-      //             (Route<dynamic> route) => false);
-      //     // Navigator.of(context).pushReplacementNamed('/home');
-      //   }else{
-      //     AppWidget.hideDialog();
-      //     showDialog(
-      //         context: context,
-      //         builder: (context) {
-      //           return AlertDialog(
-      //             content: Text(map['message']),
-      //             actions: <Widget>[
-      //               // ignore: deprecated_member_use
-      //               FlatButton(
-      //                   onPressed: () {
-      //                     Navigator.of(context).pop();
-      //                   },
-      //                   child: Text('Ok'))
-      //             ],
-      //           );
-      //         });
-      //   }
+      AppWidget.showDialogLoading();
+      var params = {
+        'Query': _queryController.text.toString(),
+      };
+      contact = await service.contactUs(params,token);
+      if (contact!.statusCode == 200) {
+        AppWidget.hideDialog();
+        Navigator.pop(context);
+      }
+
+      else {
+        AppWidget.hideDialog();
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(contact!.message.toString()),
+                actions: <Widget>[
+
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.teal,
+                      fixedSize: Size.fromWidth(100),
+                      padding: EdgeInsets.all(10),
+                    ),
+                    child: Text("Okay"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            });
+      }
     }
+  }
+  @override
+  void initState() {
+    super.initState();
+    getSharedData();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -177,5 +183,13 @@ class _ContactUsScreenState extends State<ContactUsScreen>{
 
 
     );
+  }
+
+  Future<void> getSharedData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    setState(() {
+      token = sharedPreferences.getString(AppKeys.token);
+      print('tokencccccc  -  $token');
+    });
   }
 }

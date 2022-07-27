@@ -1,3 +1,5 @@
+
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_keys.dart';
@@ -6,7 +8,7 @@ class SharedPref {
   late SharedPreferences _preferences;
   static SharedPref? sharedPref;
 
-  Future<void> init() async {
+   Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
     sharedPref = this;
     return;
@@ -15,6 +17,14 @@ class SharedPref {
   static SharedPref? getInstance() {
     return sharedPref;
   }
+
+   setString(String key,String value){
+    return _preferences.setString(AppKeys.userId, "naresh");
+  }
+
+
+
+
 
   Future addStringToSF(String key, String value) async {
     return _preferences.setString(key, value);
@@ -37,7 +47,7 @@ class SharedPref {
   }
 
   String getAccessToken() {
-    return getStringValuesSF(AppKeys.loginId);
+    return getStringValuesSF(AppKeys.userId);
   }
 
   String getStringValuesSF(String key) {
