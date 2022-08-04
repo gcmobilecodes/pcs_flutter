@@ -148,24 +148,9 @@ class _LoginScreenState extends State<LoginScreen> {
                          secure: true,
                          errMsg: "Password is required",
                        ),
-                       SizedBox(
-                         height: 10,
-                       ),
-                       GestureDetector(
-                         onTap:() {
-                            //Get.to(LoginScreen());
-                         },
-                         child: Align(
-                           alignment: Alignment.centerRight,
-                         child: Text(
-                             "Forget Passoword?",
-                           style: TextStyle(color:SlicingColors.colorPrimary),
 
-                         ),
-                       )
-                       ),
                        const SizedBox(
-                         height: 40,
+                         height: 50,
                        ),
                        ButtonWidget(buttonName: 'Login',onpressed: valfn),
                        SizedBox(height: 30,),

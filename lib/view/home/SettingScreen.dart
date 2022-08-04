@@ -5,12 +5,15 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:pcs/view/home/ContactUsScreen.dart';
 import 'package:pcs/view/home/EditProfileScreen.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../utils/SharedPref.dart';
 import '../../utils/color_utils.dart';
+import '../../webview_screen.dart';
 import '../auth/LoginScreen.dart';
 
 class SettingScreen extends StatefulWidget {
+
   const SettingScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,6 +22,7 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   final _formKey = GlobalKey<FormState>();
+
   void valfn() async {
     if (_formKey.currentState!.validate()) {
       //   AppWidget.showDialogLoading();
@@ -221,7 +225,9 @@ class _SettingScreenState extends State<SettingScreen> {
                             GestureDetector(
                               onTap: ()
                               {
-
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context){
+                                  return WebViewExample(url:  "http://18.119.37.224/Terms&Conditions",);
+                                }));
                               },
                               child:Row(
                                 children: [
